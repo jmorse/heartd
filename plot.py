@@ -32,7 +32,7 @@ class Display(QMainWindow):
         self.setCentralWidget(self.frame)
 
         self.ax = self.mpl_fig.add_subplot(1, 1, 1)
-        self.ax.set_ylim(0, 1024)
+        self.ax.set_ylim(300, 850)
         self.ax.plot(data)
 
         # Magically make us redraw every .1s
@@ -43,9 +43,6 @@ class Display(QMainWindow):
 
     def update(self):
         global data # yeah
-
-        self.ax.clear()
-        self.ax.plot(data)
 
         newsamples = []
         while True:
@@ -58,7 +55,13 @@ class Display(QMainWindow):
         data = data[numsamps:]
         newsamples = [x.value for x in newsamples]
         data.extend(newsamples)
-        print "lolwat"
+
+        self.ax.clear()
+        self.ax.set_ylim(300, 850)
+        self.ax.plot(data)
+        self.mpl_surface.draw()
+
+
 
 """
 data = []

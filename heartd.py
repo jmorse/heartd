@@ -2,7 +2,6 @@
 
 import struct
 import os
-import atexit
 import io
 import bluetooth
 import socket
@@ -14,13 +13,10 @@ port = 1
 sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 sock.connect((bd_addr, port))
 
-netsock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-netsock.bind('/tmp/heartd')
+netsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+netsock.bind(('127.0.0.1', 1234))
 netsock.listen(1)
 netsock.setblocking(False)
-def unlinker():
-    os.unlink('/tmp/heartd')
-atexit.register(unlinker)
 
 sock.send("+++AT+BAUD8\r")
 sock.setblocking(True)

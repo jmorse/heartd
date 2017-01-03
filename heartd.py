@@ -54,7 +54,7 @@ def pair2int(p):
     base += ord(p[1]) * 256
     return base
 
-clients = []
+clients = set()
 
 while True:
     millis = reader.read(2)
@@ -70,16 +70,21 @@ while True:
     m = pair2int(millis)
     s = pair2int(sample)
     packed = struct.pack('LL', m, s)
+    ded = []
     for x in clients:
-        print "sending to a client lol"
-        x.send(packed)
+        try:
+            x.send(packed)
+        except socket.error:
+            ded.append(x)
+
+    for x in ded:
+        clients.remove(x)
 
     #print "{},{}".format(pair2int(millis), pair2int(sample))
 
     try:
-        u = netsock.accept()
-        clients.append(u)
-        print "got a client lol"
+        conn, addr = netsock.accept()
+        clients.add(conn)
     except socket.error:
         pass
 

@@ -61,24 +61,6 @@ class Display(QMainWindow):
         self.ax.plot(data)
         self.mpl_surface.draw()
 
-
-
-"""
-data = []
-with open(sys.argv[1], "r") as f:
-    for x in f.readlines():
-        x = x.rstrip('\n')
-        x = x.rstrip('\r')
-        x = x.rstrip()
-        x = x.split(',')
-        x = [y.rstrip(',') for y in x]
-        x = [int(y) for y in x]
-        data.append(x[1])
-"""
-
-#plt.plot(data)
-#plt.show()
-
 app = QApplication(sys.argv)
 d = Display(data)
 d.show()

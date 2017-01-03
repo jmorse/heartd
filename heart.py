@@ -22,3 +22,6 @@ class Heart:
     def disconnect(self):
         self.s.shutdown()
         self.s = None
+
+    def setblocking(self, val):
+        self.s.setblocking(val)

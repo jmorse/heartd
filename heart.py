@@ -18,3 +18,7 @@ class Heart:
         assert len(sample) == 8
         t, s = struct.unpack('LL', sample)
         return Sample(t, s)
+
+    def disconnect(self):
+        self.s.shutdown()
+        self.s = None

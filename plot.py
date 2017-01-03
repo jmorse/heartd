@@ -9,10 +9,12 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as MplBackend
 
 from heart import Heart
 
-SAMPLES=1000
+SAMPLES=3000
 MINY=300
 MAXY=850
 FRAMERATE=30
+DISPLAYX=10
+DISPLAYY=10
 
 data = []
 for x in range(SAMPLES):
@@ -29,7 +31,7 @@ class Display(QMainWindow):
 
         self.frame = QWidget()
 
-        self.mpl_fig = Figure((5, 5))
+        self.mpl_fig = Figure((DISPLAYX, DISPLAYY))
         self.mpl_surface = MplBackend(self.mpl_fig)
         v = QVBoxLayout()
         v.addWidget(self.mpl_surface)

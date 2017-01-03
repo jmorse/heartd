@@ -10,7 +10,7 @@ class Heart:
     def __init__(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Set a receive buffer large enough for 1s of samples
-        self.setsockopt(socket.SOL_SOCKET, socket.SO_RECVBUF, 1024*8)
+        self.s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024*8)
 
     def connect(self):
         self.s.connect(('127.0.0.1', 1234))

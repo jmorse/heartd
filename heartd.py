@@ -69,7 +69,7 @@ while True:
 
     m = pair2int(millis)
     s = pair2int(sample)
-    packed = struct.pack('LL', m, s)
+    packed = struct.pack('II', m, s)
     ded = []
     for x in clients:
         try:

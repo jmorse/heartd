@@ -18,7 +18,7 @@ class Heart:
     def read_sample(self):
         sample = self.s.recv(8)
         assert len(sample) == 8
-        t, s = struct.unpack('LL', sample)
+        t, s = struct.unpack('II', sample)
         return Sample(t, s)
 
     def disconnect(self):

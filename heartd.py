@@ -1,7 +1,11 @@
 #!/usr/bin/python
 
+import struct
+import os
+import atexit
 import io
 import bluetooth
+import socket
 
 bd_addr = "20:15:12:08:63:95"
 
@@ -9,6 +13,14 @@ port = 1
 
 sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 sock.connect((bd_addr, port))
+
+netsock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+netsock.bind('/tmp/heartd')
+netsock.listen(1)
+netsock.setblocking(False)
+def unlinker():
+    os.unlink('/tmp/heartd')
+atexit.register(unlinker)
 
 sock.send("+++AT+BAUD8\r")
 sock.setblocking(True)
@@ -46,6 +58,8 @@ def pair2int(p):
     base += ord(p[1]) * 256
     return base
 
+clients = []
+
 while True:
     millis = reader.read(2)
     fives = reader.read(2)
@@ -57,7 +71,21 @@ while True:
     assert ord(aaas[0]) == 0xAA
     assert ord(aaas[1]) == 0xAA
 
-    print "{},{}".format(pair2int(millis), pair2int(sample))
+    m = pair2int(millis)
+    s = pair2int(sample)
+    packed = struct.pack('LL', m, s)
+    for x in clients:
+        print "sending to a client lol"
+        x.send(packed)
+
+    #print "{},{}".format(pair2int(millis), pair2int(sample))
+
+    try:
+        u = netsock.accept()
+        clients.append(u)
+        print "got a client lol"
+    except socket.error:
+        pass
 
 sock.close()
 

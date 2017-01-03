@@ -15,6 +15,7 @@ for x in range(1000):
 
 heart = Heart()
 heart.connect()
+heart.setblocking(False)
 
 class Display(QMainWindow):
     def __init__(self, data, parent=None):
@@ -46,7 +47,10 @@ class Display(QMainWindow):
 
         newsamples = []
         while True:
-            newsamples.append(heart.read_sample())
+            samp = heart.read_sample()
+            if samp == None:
+                break
+            newsamples.append(samp)
 
         print "lolwat"
 

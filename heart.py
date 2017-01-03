@@ -16,7 +16,11 @@ class Heart:
         self.s.connect(('127.0.0.1', 1234))
 
     def read_sample(self):
-        sample = self.s.recv(8)
+        try:
+            sample = self.s.recv(8)
+        except socket.error:
+            return None
+
         assert len(sample) == 8
         t, s = struct.unpack('II', sample)
         return Sample(t, s)

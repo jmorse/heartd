@@ -9,8 +9,13 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as MplBackend
 
 from heart import Heart
 
+SAMPLES=1000
+MINY=300
+MAXY=850
+FRAMERATE=30
+
 data = []
-for x in range(1000):
+for x in range(SAMPLES):
     data.append(512)
 
 heart = Heart()
@@ -32,14 +37,18 @@ class Display(QMainWindow):
         self.setCentralWidget(self.frame)
 
         self.ax = self.mpl_fig.add_subplot(1, 1, 1)
-        self.ax.set_ylim(300, 850)
+        self.clear_axes()
         self.ax.plot(data)
 
         # Magically make us redraw every .1s
         self.timer = QTimer()
         self.timer.setSingleShot(False)
         self.timer.timeout.connect(self.update)
-        self.timer.start(100)
+        self.timer.start(1000/FRAMERATE)
+
+    def clear_axes(self):
+        self.ax.clear()
+        self.ax.set_ylim(MINY, MAXY)
 
     def update(self):
         global data # yeah
@@ -56,8 +65,7 @@ class Display(QMainWindow):
         newsamples = [x.value for x in newsamples]
         data.extend(newsamples)
 
-        self.ax.clear()
-        self.ax.set_ylim(300, 850)
+        self.clear_axes()
         self.ax.plot(data)
         self.mpl_surface.draw()
 

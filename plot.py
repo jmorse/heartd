@@ -42,6 +42,8 @@ class Display(QMainWindow):
         self.timer.start(100)
 
     def update(self):
+        global data # yeah
+
         self.ax.clear()
         self.ax.plot(data)
 
@@ -52,6 +54,10 @@ class Display(QMainWindow):
                 break
             newsamples.append(samp)
 
+        numsamps = len(newsamples)
+        data = data[numsamps:]
+        newsamples = [x.value for x in newsamples]
+        data.extend(newsamples)
         print "lolwat"
 
 """

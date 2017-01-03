@@ -12,8 +12,7 @@ from heart import Heart
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--rate-limit", help="Limit rate at which we read samples", action='store_true')
-
-args = parser.parse_args()
+parser.add_argument("--framerate", help="Rate at which to read samples")
 
 SAMPLES=3000
 MINY=300
@@ -21,6 +20,10 @@ MAXY=850
 FRAMERATE=30
 DISPLAYX=10
 DISPLAYY=10
+
+args = parser.parse_args()
+if args.framerate != None:
+    FRAMERATE = int(args.framerate)
 
 data = []
 for x in range(SAMPLES):

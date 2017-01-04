@@ -9,11 +9,13 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as MplBackend
 
 from heart import Heart
+from heart import HeartRecording
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--rate-limit", help="Limit rate at which we read samples", action='store_true')
 parser.add_argument("--framerate", help="Screen refresh rate")
 parser.add_argument("--speed", help="Rate at which to read samples", default=1)
+parser.add_argument("--tracefile", help="Heartsignal trace file")
 
 SAMPLES=3000
 MINY=300
@@ -31,7 +33,11 @@ data = []
 for x in range(SAMPLES):
     data.append(512)
 
-heart = Heart()
+if args.tracefile != None:
+    heart = HeartRecording(args.tracefile)
+else:
+    heart = Heart()
+
 heart.connect()
 heart.setblocking(False)
 

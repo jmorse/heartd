@@ -12,7 +12,7 @@ class Sample:
         t, s = struct.unpack('II', b)
         return Sample(t, s)
 
-class Heart:
+class Heart(object):
     def __init__(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Set a receive buffer large enough for 1s of samples
@@ -35,3 +35,17 @@ class Heart:
 
     def setblocking(self, val):
         self.s.setblocking(val)
+
+class HeartRecording(Heart):
+    def __init__(self, f):
+        super(HeartRecording, self).__init__()
+        self.thefile = open(f, "rb")
+
+    def connect(self):
+        pass
+
+    def read_sample(self):
+        b = self.thefile.read(8)
+        if len(b) == 0:
+            return None
+        return Sample.from_bytes(b)

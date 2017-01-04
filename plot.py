@@ -12,7 +12,8 @@ from heart import Heart
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--rate-limit", help="Limit rate at which we read samples", action='store_true')
-parser.add_argument("--framerate", help="Rate at which to read samples")
+parser.add_argument("--framerate", help="Screen refresh rate")
+parser.add_argument("--speed", help="Rate at which to read samples", default=1)
 
 SAMPLES=3000
 MINY=300
@@ -24,6 +25,7 @@ DISPLAYY=10
 args = parser.parse_args()
 if args.framerate != None:
     FRAMERATE = int(args.framerate)
+SPEED=float(args.speed)
 
 data = []
 for x in range(SAMPLES):
@@ -68,7 +70,7 @@ class Display(QMainWindow):
         self.pacer_count = 0
 
         def pacer_func():
-            if self.pacer_count >= FRAMERATE:
+            if self.pacer_count >= SPEED * (1000/FRAMERATE):
                 return False
             else:
                 self.pacer_count += 1

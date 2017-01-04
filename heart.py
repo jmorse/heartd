@@ -6,6 +6,12 @@ class Sample:
         self.timestamp = timestamp
         self.value = value
 
+    @staticmethod
+    def from_bytes(b):
+        assert len(b) == 8
+        t, s = struct.unpack('II', b)
+        return Sample(t, s)
+
 class Heart:
     def __init__(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -21,9 +27,7 @@ class Heart:
         except socket.error:
             return None
 
-        assert len(sample) == 8
-        t, s = struct.unpack('II', sample)
-        return Sample(t, s)
+        return Sample.from_bytes(sample)
 
     def disconnect(self):
         self.s.shutdown()

@@ -6,6 +6,12 @@ import peakutils
 
 arr = np.load(sys.argv[1])
 
+ones = np.ones(1000)
+avg = np.convolve(arr, ones)
+arr1 = np.concatenate(arr, np.ones(999, dtype=np.int16))
+avg /= 1000
+normarr = arr1 - avg
+
 lolsin = np.arange(0, np.pi, np.pi/100)
 lolsin = np.sin(lolsin)
 conarr = np.correlate(arr, lolsin)

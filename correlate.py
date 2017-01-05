@@ -19,17 +19,20 @@ def recognize_seq(idx):
     return ppeak < rpeak and ppeak < tpeak
 
 class Seq:
-    def __init__(self, p, r, t):
+    def __init__(self, p, r, t, ppeak, rpeak, tpeak):
         self.p =  p
         self.r = r
         self.t = t
+        self.ppeak = ppeak
+        self.rpeak = rpeak
+        self.tpeak = tpeak
 
     @staticmethod
     def from_res(idx):
         ppeak = conarr[res[idx]]
         rpeak = conarr[res[idx+1]]
         tpeak = conarr[res[idx+2]]
-        return Seq(ppeak, rpeak, tpeak)
+        return Seq(res[idx], res[idx+1], res[idx+2], ppeak, rpeak, tpeak)
 
 seqs = []
 for x in range(len(res) - 2):
@@ -37,3 +40,5 @@ for x in range(len(res) - 2):
         seqs.append(Seq.from_res(x))
 
 print len(seqs)
+for x in seqs:
+    print x.r - x.p

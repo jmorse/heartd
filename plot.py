@@ -12,12 +12,12 @@ from heart import Heart
 from heart import HeartRecording
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--rate-limit", help="Limit rate at which we read samples", action='store_true')
+parser.add_argument("--rate-limit", help="Limit rate at which we read samples")
 parser.add_argument("--framerate", help="Screen refresh rate")
 parser.add_argument("--speed", help="Rate at which to read samples", default=1)
 parser.add_argument("--tracefile", help="Heartsignal trace file")
 
-SAMPLES=3000
+SAMPLES=9000
 MINY=300
 MAXY=850
 FRAMERATE=30

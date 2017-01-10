@@ -60,7 +60,10 @@ clients = set()
 
 while True:
     sample = reader.read(2)
-    assert ord(sample[1]) <= 3
+    if ord(sample[1]) > 3:
+        # We're out of sync for some reason
+        reader.read(1)
+        continue
 
     s = pair2int(sample)
     packed = struct.pack('I', s)

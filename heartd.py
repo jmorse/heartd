@@ -37,17 +37,19 @@ def readinto(b):
 
 sock.readinto = readinto
 
-# Train:
+# Assuming spoons are not forks, we should read a byte with high bits set, then
+# with no high bits set, to synchronise. Burn bytes until this happens.
+# Obviously this isn't guaranteed to complete, but the signal is sufficiently
+# noisy for this to not generally be the case
 numas = 0
 while True:
     f = reader.read(1)
-    if ord(f[0]) == 0xAA:
-        numas += 1
+    if ord(f[0]) > 3 and numas == 0:
+        numas = 1
+    elif ord(f[0]) <= 3 and numas == 1:
+        break
     else:
         numas = 0
-
-    if numas == 2:
-        break;
 
 def pair2int(p):
     base = ord(p[0])
@@ -57,19 +59,11 @@ def pair2int(p):
 clients = set()
 
 while True:
-    millis = reader.read(2)
-    fives = reader.read(2)
     sample = reader.read(2)
-    aaas = reader.read(2)
+    assert ord(sample[1]) <= 3
 
-    assert ord(fives[0]) == 0x55
-    assert ord(fives[0]) == 0x55
-    assert ord(aaas[0]) == 0xAA
-    assert ord(aaas[1]) == 0xAA
-
-    m = pair2int(millis)
     s = pair2int(sample)
-    packed = struct.pack('II', m, s)
+    packed = struct.pack('I', s)
     ded = []
     for x in clients:
         try:

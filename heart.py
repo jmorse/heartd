@@ -4,15 +4,15 @@ import socket
 import struct
 
 class Sample:
-    def __init__(self, timestamp, value):
-        self.timestamp = timestamp
+    def __init__(self, value):
+        self.timestamp = 0
         self.value = value
 
     @staticmethod
     def from_bytes(b):
-        assert len(b) == 8
-        t, s = struct.unpack('II', b)
-        return Sample(t, s)
+        assert len(b) == 4
+        s, = struct.unpack('I', b)
+        return Sample(s)
 
 class Heart(object):
     def __init__(self):
@@ -25,7 +25,7 @@ class Heart(object):
 
     def read_sample(self):
         try:
-            sample = self.s.recv(8)
+            sample = self.s.recv(4)
         except socket.error:
             return None
 

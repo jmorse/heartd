@@ -31,6 +31,21 @@ class Heart(object):
 
         return Sample.from_bytes(sample)
 
+    def read_samples(self):
+        try:
+            # Relying on packet len being < MTU here...
+            samples = self.s.recv(2048)
+        except socket.error:
+            return None
+        assert (len(samples) % 4) == 0
+
+        results = []
+        while len(samples) != 0:
+            samp, samples = samples[:4], samples[4:]
+            results.append(Sample.from_bytes(samp))
+
+        return results
+
     def disconnect(self):
         self.s.shutdown()
         self.s = None

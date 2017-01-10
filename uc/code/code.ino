@@ -5,6 +5,7 @@ void setup() {
 //  UBRR0H = 0;
 //  UBRR0L = 8;
   //analogReference(EXTERNAL);
+  // At a clock rate of 125khz / 13ADChz, we get a sample rate of 9615.3hz
   ADMUX = 0x4; // Internal reference, no left shift, ADC4.
   ADCSRA = 0xAF; // ADC on, Auto trigger, intr enable, CLK/128 = 125khz
   ADCSRB = 0; // Free running mode

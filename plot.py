@@ -89,11 +89,15 @@ class Display(QMainWindow):
 
         newsamples = []
         pacer = self.read_pacer()
-        while pacer():
-            samp = heart.read_sample()
-            if samp == None:
-                break
-            newsamples.append(samp)
+        if args.rate_limit == None and isinstance(heart, Heart):
+            # If we're reading directly from the socket, read in samples
+            newsamples = heart.read_samples()
+        else:
+            while pacer():
+                samp = heart.read_sample()
+                if samp == None:
+                    break
+                newsamples.append(samp)
 
         numsamps = len(newsamples)
         data = data[numsamps:]

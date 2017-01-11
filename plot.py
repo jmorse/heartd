@@ -16,10 +16,10 @@ parser.add_argument("--rate-limit", help="Limit rate at which we read samples")
 parser.add_argument("--framerate", help="Screen refresh rate")
 parser.add_argument("--speed", help="Rate at which to read samples", default=1)
 parser.add_argument("--tracefile", help="Heartsignal trace file")
+parser.add_argument("--samples", help="How wide the x dimensions should be in samples", default=9000)
 
-SAMPLES=9000
 MINY=300
-MAXY=850
+MAXY=1000
 FRAMERATE=30
 DISPLAYX=10
 DISPLAYY=10
@@ -28,6 +28,7 @@ args = parser.parse_args()
 if args.framerate != None:
     FRAMERATE = int(args.framerate)
 SPEED=float(args.speed)
+SAMPLES=int(args.samples)
 
 data = []
 for x in range(SAMPLES):

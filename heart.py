@@ -63,10 +63,19 @@ class HeartRecording(Heart):
         pass
 
     def read_sample(self):
-        b = self.thefile.read(8)
+        b = self.thefile.read(4)
         if len(b) == 0:
             return None
         return Sample.from_bytes(b)
+
+    def simple_to_numpy(self):
+        foo = []
+        while True:
+            x = self.read_sample()
+            if x == None:
+                break
+            foo.append(x.value)
+        return np.array(foo)
 
     def to_numpy(self):
         res = os.stat(self.filename)

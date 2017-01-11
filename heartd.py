@@ -62,6 +62,7 @@ while True:
     sample = reader.read(2)
     if ord(sample[1]) > 3:
         # We're out of sync for some reason
+        print "fail"
         reader.read(1)
         continue
 
